@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Management</title>
+<style>
+/* Responsive Design */
+@media only screen and (max-width: 600px) {
+  /* Adjust styles for smaller screens */
+  table {
+    width: 100%;
+  }
+  th, td {
+    display: block;
+    width: 100%;
+  }
+  th {
+    text-align: left;
+  }
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+/* Button Styles */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Form Styles */
+.form-container {
+  margin-bottom: 20px;
+}
+
+.form-container input[type="text"],
+.form-container select {
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.form-container button {
+  padding: 8px 16px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- Task Management Form -->
+<h1>Assign Task</h1>
+<div class="form-container">
+  <form action="{% url 'assign_task' %}" method="POST">
+    {% csrf_token %}
+    <select id="task-list" name="task">
+      <option value="">Select Task</option>
+      <!-- Iterate over the task data and populate options dynamically -->
+      {% for task in tasks %}
+        <option value="{{ task.title }}">{{ task.title }}</option>
+      {% endfor %}
+    </select>
+    <input type="text" name="email" id="email" placeholder="Your Email Id">
+    <select id="user-list" name="userlist">
+      <option value="">Select User</option>
+      <!-- Iterate over the user data and populate options dynamically -->
+      {% for user in users %}
+        <option value="{{ user.Fast_name }} {{ user.Last_name }}">{{ user.Fast_name }} {{ user.Last_name }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <br>
+    <button id="search-button">Show User & Task Lists</button>
+    <br><br>
+    <button id="assign-button">Assign Task</button>
+  </form>
+  <br>
+  <form action="{% url 'back' %}" method="POST">
+    {% csrf_token %}
+    <button>Back to Dashboard</button>
+  </form>
+</div>
+
+<!-- Task Details Table -->
+<table id="task-details">
+  <thead>
+    <tr>
+      <th>Task Title</th>
+      <th>Created User</th>
+      <th>Assigned User</th>
+    </tr>
+  </thead>
+  <tbody id="task-details-list">
+    {% for result in results %}
+    <tr>
+      <td>{{ result.Task_Title }}</td>
+      <td>{{ result.Created_User }}</td>
+      <td>{{ result.Assigned_User }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+</body>
+</html>

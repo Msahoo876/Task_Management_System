@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile</title>
+<style>
+/* General Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+}
+
+.container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Form Styles */
+form {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>My Profile</h1>
+<form action="{% url 'profile_task' %}" method="POST">
+  {% csrf_token %}
+  <!-- Profile Information -->
+  <p id="fastname" name="fast">Fast Name: {{ fast }} </p>
+  <p id="lastname" name="last">Last Name: {{ last }} </p>
+  <p id="email" name="email">Email Id: {{ email }} </p>
+  <p id="paaswd" name="passwd">Password: {{ passwd }} </p> 
+
+  <!-- Assign Task Button -->
+  <button id="assign-task-button">Show Task Details</button>
+</form>
+<form action="{% url 'back' %}" method="POST">
+  {% csrf_token %}
+  <button>Back to Dashboard</button>
+</form>
+
+<!-- Task Details Table -->
+<table id="task-details">
+  <thead>
+    <tr>
+      <th>Task Title</th>
+      <th>Description</th>
+      <th>Due Date</th>
+      <th>Priority</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody id="task-details-list">
+    {% for task in result1 %}
+      <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.description }}</td>
+        <td>{{ task.due_date }}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.status }}</td>
+      </tr>
+        {% endfor %}
+  </tbody>
+</table>
+
+<!-- Task Details Table -->
+<table id="task-details">
+  <thead>
+    <tr>
+      <th>Task Title</th>
+      <th>Created User</th>
+      <th>Assigned User</th>
+    </tr>
+  </thead>
+  <tbody id="task-details-list">
+        {% for task in result %}
+        <tr>
+          <td>{{ task.Task_Title }}</td>
+        <td>{{ task.Created_User }}</td>
+        <td>{{ task.Assigned_User }}</td>
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+</div>
+
+</body>
+</html>

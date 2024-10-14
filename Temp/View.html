@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasks</title>
+<style>
+/* Responsive Design */
+@media only screen and (max-width: 600px) {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+
+  thead {
+    display: none; /* Hide table header on small screens */
+  }
+
+  tbody, tr, td {
+    display: block;
+  }
+
+  tr {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+  }
+
+  td {
+    border-bottom: 1px solid #ccc;
+  }
+
+  td:before {
+    content: attr(data-label); /* Display column label as pseudo element */
+    font-weight: bold;
+    display: inline-block;
+    width: 50%; /* Adjust based on the number of columns */
+  }
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+/* Search Box Styles */
+.search-box {
+  margin-bottom: 10px;
+}
+
+.search-box input[type="text"] {
+  padding: 5px;
+  width: 200px;
+}
+
+.search-box button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #4CAF50;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.search-box button:hover {
+  background-color: #45a049;
+}
+</style>
+</head>
+<body>
+
+<!-- Search Box -->
+<h1>View Record</h1>
+<div class="search-box">
+  <form action="{% url 'search_task' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="search-title" id="search-title" placeholder="Enter Task Title">
+    <br>
+    <br>
+    <button type="submit" id="search-button">Search</button>
+</form>
+  <br>
+  <br>
+  <form action="{% url 'get_tasks3' %}" method="POST">
+    {% csrf_token %}
+    <button id="show-all-button">Show All</button>
+</form>
+<br>
+<form action="{% url 'back' %}" method="POST">
+  {% csrf_token %}
+  <button>Back to Dashboard</button>
+</form>
+</div>
+
+<!-- Search Results Table -->
+<table id="search-results-table">
+  <thead>
+      <tr>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Due Date</th>
+          <th>Priority</th>
+          <th>Status</th>
+      </tr>
+  </thead>
+  <tbody id="search-results-body">
+      {% for task in results %}
+      <tr>
+          <td>{{ task.title }}</td>
+          <td>{{ task.description }}</td>
+          <td>{{ task.due_date }}</td>
+          <td>{{ task.priority }}</td>
+          <td>{{ task.status }}</td>
+      </tr>
+      {% endfor %}
+  </tbody>
+</table>
+
+</body>
+</html>
